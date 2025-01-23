@@ -61,3 +61,12 @@ window.addEventListener('resize', () => {
 });
 
 animate();
+
+// npm create vite@latest
+// y
+// ./
+// *select framework
+// *select language
+// npm install
+// npm i three
+// npm run dev
