@@ -1,20 +1,25 @@
 import { PerspectiveCamera } from "@react-three/drei";
 import React, { Suspense } from "react";
 import HackerRoom from "../components/HackerRoom";
-//import { AmbientLight, DirectionalLight } from "three";
+import Target from '../components/Target';
 import CanvasLoader from "../components/CanvasLoader";
 import { Canvas } from "@react-three/fiber";
 import { Leva, useControls } from "leva";
+import {useMediaQuery} from 'react-responsive';
+import ReactLogo from "../components/ReactLogo";
+import Cube from "../components/Cube";
+import Rings from "../components/Rings";
+import HeroCamera from "../components/HeroCamera";
 
 const Hero = () => {
     const controls = useControls ('HackerRoom', {
         positionX: {
-            value: 2.5,
+            value: 1.1,
             min: -10,
             max: 10
         },
         positionY: {
-            value: 2.5,
+            value: -7.5,
             min: -10,
             max: 10
         },
@@ -22,8 +27,32 @@ const Hero = () => {
             value: 2.5,
             min: -10,
             max: 10
+        },
+        rotationX: {
+            value: 0,
+            min: -10,
+            max: 10
+        },
+        rotationY: {
+            value: -3.2,
+            min: -10,
+            max: 10
+        },
+        rotationZ: {
+            value: 0,
+            min: -10,
+            max: 10
+        },
+        scale: {
+            value: 0.1,
+            min: 0.1,
+            max: 1
         }
     })
+
+    const isMobile = useMediaQuery({ query: '(max-width: 768px)' })
+    const isTablet = useMediaQuery({ query: '(max-width: 1024px)' })
+    const isSmall = useMediaQuery({ query: '(max-width: 440px)' })
 
     return(
         <section className="min-h-screen w-full flex flex-col relative">
@@ -35,11 +64,21 @@ const Hero = () => {
                 </p>
             </div>
             <div className="w-full h-full absolute inset-0">
-            <Leva/>
+            <Leva hidden/>
             <Canvas className="w-full h-full">
                 <Suspense fallback={<CanvasLoader/>}>
                     <PerspectiveCamera makeDefault position={[0,0,30]}/>
-                    <HackerRoom scale={[controls.positionX, controls.positionY, controls.positionZ]} position={[0,-4,0]} rotation={[0, 280,0]}/>
+                    <HeroCamera isMobile={isMobile}>
+                        <HackerRoom scale={isMobile ? 0.07 : 0.1}
+                        position={[controls.positionX, controls.positionY, controls.positionZ]}
+                        rotation={[0,-Math.PI, 0]}/>
+                    </HeroCamera>
+                    <group>
+                        <Target position={[controls.positionX - 13, controls.positionY, controls.positionZ]}/>
+                        <ReactLogo position={[controls.positionX + 10, controls.positionY + 13, controls.positionZ]}/>
+                        <Cube position={[controls.positionX + 8, controls.positionY + 5, controls.positionZ]}/>
+                        <Rings position={[controls.positionX - 22, controls.positionY + 14, controls.positionZ]}/>
+                    </group>
                     <ambientLight intensity={1}/>
                     <directionalLight position={[10,10,10]} intensity={0.5}/>
                 </Suspense>
