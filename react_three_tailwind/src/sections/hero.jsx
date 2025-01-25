@@ -10,6 +10,7 @@ import ReactLogo from "../components/ReactLogo";
 import Cube from "../components/Cube";
 import Rings from "../components/Rings";
 import HeroCamera from "../components/HeroCamera";
+import Button from "../components/Button";
 
 const Hero = () => {
     const controls = useControls ('HackerRoom', {
@@ -65,24 +66,29 @@ const Hero = () => {
             </div>
             <div className="w-full h-full absolute inset-0">
             <Leva hidden/>
-            <Canvas className="w-full h-full">
-                <Suspense fallback={<CanvasLoader/>}>
-                    <PerspectiveCamera makeDefault position={[0,0,30]}/>
-                    <HeroCamera isMobile={isMobile}>
-                        <HackerRoom scale={isMobile ? 0.07 : 0.1}
-                        position={[controls.positionX, controls.positionY, controls.positionZ]}
-                        rotation={[0,-Math.PI, 0]}/>
-                    </HeroCamera>
-                    <group>
-                        <Target position={[controls.positionX - 13, controls.positionY, controls.positionZ]}/>
-                        <ReactLogo position={[controls.positionX + 10, controls.positionY + 13, controls.positionZ]}/>
-                        <Cube position={[controls.positionX + 8, controls.positionY + 5, controls.positionZ]}/>
-                        <Rings position={[controls.positionX - 22, controls.positionY + 14, controls.positionZ]}/>
-                    </group>
-                    <ambientLight intensity={1}/>
-                    <directionalLight position={[10,10,10]} intensity={0.5}/>
-                </Suspense>
-            </Canvas>
+                <Canvas className="w-full h-full">
+                    <Suspense fallback={<CanvasLoader/>}>
+                        <PerspectiveCamera makeDefault position={[0,0,30]}/>
+                        <HeroCamera isMobile={isMobile}>
+                            <HackerRoom scale={isMobile ? 0.07 : 0.1}
+                            position={[controls.positionX, controls.positionY, controls.positionZ]}
+                            rotation={[0,-Math.PI, 0]}/>
+                        </HeroCamera>
+                        <group>
+                            <Target position={[controls.positionX - 13, controls.positionY, controls.positionZ]}/>
+                            <ReactLogo position={[controls.positionX + 10, controls.positionY + 13, controls.positionZ]}/>
+                            <Cube position={[controls.positionX + 8, controls.positionY + 5, controls.positionZ]}/>
+                            <Rings position={[controls.positionX - 22, controls.positionY + 14, controls.positionZ]}/>
+                        </group>
+                        <ambientLight intensity={1}/>
+                        <directionalLight position={[10,10,10]} intensity={0.5}/>
+                    </Suspense>
+                </Canvas>
+            </div>
+            <div className="absolute bottom-7 left-0 right-0 w-full z-10 sm:px-10 px-5">
+                <a href="#about" className="w-fit">
+                    <Button name="Let's work together" isBeam containerClass="sm:w-fit w-full sm:min-w-96 mx-auto"/>
+                </a>
             </div>
         </section>
     )
