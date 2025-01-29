@@ -46,13 +46,13 @@ const Contact = () => {
     }
 
     return(
-        <section className="sm:px-10 px-5 my-20">
+        <section className="sm:px-10 px-5 my-20" id="contact">
             <div className="relative min-h-screen flex items-center justify-center flex-col">
                 <img src="/assets/terminal.png" alt="terminal" className="absolute inset-0 min-h-screen"/>
                 <div className="max-w-xl relative z-10 sm:px-10 px-5 mt-12">
                     <h3 className="sm:text-4xl text-3xl font-semibold text-white">Let's talk</h3>
                     <p className="text-lg text-white mt-3">
-                        Text here....
+                        Type your message
                     </p>
                     <form ref={formRef} onSubmit={handleSubmit} className="mt-12 flex flex-col space-y-7">
                         <label className="space-y-3">

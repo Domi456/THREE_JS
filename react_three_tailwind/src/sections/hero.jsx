@@ -56,12 +56,12 @@ const Hero = () => {
     const isSmall = useMediaQuery({ query: '(max-width: 440px)' })
 
     return(
-        <section className="min-h-screen w-full flex flex-col relative">
+        <section className="min-h-screen w-full flex flex-col relative" id="home">
             <div className="w-full mx-auto flex flex-col sm:mt-36 mt-20 sm:px-10 px-5 gap-3">
                 <p className="sm:text-3xl text-2xl font-medium text-white text-center font-generalsans">Hi, I'm Domi
                     <span className="waving-hand">👋</span></p>
                 <p className="text-center xl:text-6xl md:text-5xl sm:text-4xl text-3xl font-generalsans !leading-normal text-white">
-                    This is a text
+                    Let's look around
                 </p>
             </div>
             <div className="w-full h-full absolute inset-0">

@@ -20,7 +20,7 @@ const Projects = () => {
     }
 
     return(
-        <section className="sm:px-10 px-5 my-20">
+        <section className="sm:px-10 px-5 my-20" id="work">
             <p className="sm:text-4xl text-3xl font-semibold text-gray_gradient">My work</p>
             <div className="grid lg:grid-cols-2 grid-cols-1 gap-5 mt-12 w-full">
                 <div className="flex flex-col gap-5 relative sm:p-10 py-10 px-5 shadow-2xl shadow-black-200">
@@ -45,8 +45,8 @@ const Projects = () => {
                             ))}
                         </div>
                         <a className="flex items-center gap-2 cursor-pointer text-white-600" href={currentProject.href} target="_blank" rel="noreferrer">
-                            <p className="text-white">Check live site</p>
-                            <img src="/assets/arrow-up.png" className="w-3 h-3" alt="arrow"/>
+                            <p className="text-white">{ currentProject.href ? 'Check live site' : '' }</p>
+                            { currentProject.href ? <img src="/assets/arrow-up.png" className="w-3 h-3" alt="arrow"/> : ''}
                         </a>
                     </div>
                     <div className="flex justify-between items-center mt-7">

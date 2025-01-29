@@ -2,6 +2,7 @@ import React from "react";
 import Globe from "react-globe.gl";
 import Button from "../components/Button";
 import { useState } from "react";
+import { navLinks } from "../constants";
 
 const About = () => {
 
@@ -22,7 +23,7 @@ const About = () => {
                         <img src="/assets/grid1.png" alt="grid-1" className="w-full sm:h-[276px] h-fit object-contain"/>
                         <div>
                             <p className="text-xl font-semibold mb-2 text-white font-generalsans">Hi, I'm Domi</p>
-                            <p className="text-[#afb0b6] text-base font-generalsans">With 2 years of experience, experinece in...</p>
+                            <p className="text-[#afb0b6] text-base font-generalsans">Student with 2 years of experience in the world of IT</p>
 
                         </div>
                     </div>
@@ -32,7 +33,7 @@ const About = () => {
                         <img src="/assets/grid2.png" alt="grid-2" className="w-full sm:h-[276px] h-fit object-contain"/>
                         <div>
                             <p className="text-xl font-semibold mb-2 text-white font-generalsans">Tech Stack</p>
-                            <p className="text-[#afb0b6] text-base font-generalsans">I specialize in...</p>
+                            <p className="text-[#afb0b6] text-base font-generalsans">I have experience in C#, Python, Java and fullstack web development</p>
                         </div>
                     </div>
                 </div>
@@ -42,9 +43,9 @@ const About = () => {
                             <Globe  height={326} width={326} backgroundColor="rgba(0,0,0,0)" showAtmosphere showGraticules globeImageUrl="//unpkg.com/three-globe/example/img/earth-night.jpg" bumpImageUrl="//unpkg.com/three-globe/example/img/earth-topology.png" labelsData={[{lat: 47.497913, lng: 19.040236, text: "I'm here", color: 'white', size: 550}]}/>
                         </div>
                         <div>
-                            <p className="text-xl font-semibold mb-2 text-white font-generalsans">Location</p>
+                            <p className="text-xl font-semibold mb-2 text-white font-generalsans">I can work across multiple timezones</p>
                             <p className="text-[#afb0b6] text-base font-generalsans">I'm based in Budapest, 🇭🇺</p>
-                            <Button name="Contact Me" isBeam containerClass="w-full mt-10"/>
+                            <Button href={navLinks[3].href} name="Contact Me" isBeam containerClass="w-full mt-10"/>
                         </div>
                     </div>
                 </div>
