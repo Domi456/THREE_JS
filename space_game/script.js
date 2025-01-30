@@ -6,6 +6,7 @@ class Player{
         this.x = this.game.width * 0.5 - this.width * 0.5;
         this.y = this.game.height - this.height;
         this.speed = 5;
+        this.lives = 3;
     }
 
     draw(context){
@@ -31,6 +32,11 @@ class Player{
         if(projectile){
             projectile.start(this.x + this.width * 0.5, this.y);
         }
+    }
+    restart(){
+        this.x = this.game.width * 0.5 - this.width * 0.5;
+        this.y = this.game.height - this.height;
+        this.lives = 3;
     }
 }
 
@@ -78,23 +84,59 @@ class Enemy{
         this.toDelete = false;
     }
     draw(context){
-        context.strokeRect(this.x, this.y, this.width, this.height);
+        //context.strokeRect(this.x, this.y, this.width, this.height);
+        context.drawImage(this.image, this.frameX * this.width, this.frameY * this.height, this.width, this.height, this.x, this.y, this.width, this.height);
     }
     update(x, y){
         this.x = x + this.positionX;
         this.y = y + this.positionY;
         this.game.projectilePool.forEach(proj => {
             if(!proj.free && this.game.isCollide(this, proj)){
-                this.toDelete = true;
+                //this.toDelete = true;
+                this.hit(1);
                 proj.reset();
-                this.game.score++;
             }
         });
-        // lose
+        if(this.lives < 1){
+            this.frameX++;
+            if(this.frameX > this.maxFrame){
+                this.toDelete = true;
+                if(!this.game.gameover){
+                    this.game.score += this.maxLives;
+                }
+            }
+        }
+        // ütközés a játékossal
+        if(this.game.isCollide(this, this.game.player)){
+            this.toDelete = true;
+            if(!this.game.gameover && this.game.score > 0){
+                this.game.score--;
+                this.game.player.lives--;
+                if(this.game.player.lives < 1){
+                    this.game.gameover = true;
+                }
+            }
+        }
+        // mikor van vége
         if(this.y + this.height > this.game.height){
             this.game.gameover = true;
             this.toDelete = true;
         }
+    }
+    hit(damage){
+        this.lives -= damage;
+    }
+}
+
+class RedBomber extends Enemy{
+    constructor(game, positionX, positionY){
+        super(game, positionX, positionY);
+        this.image = document.getElementById('redbomber');
+        this.frameX = 0;
+        this.frameY = Math.floor(Math.random() * 2);
+        this.maxFrame = 10;
+        this.lives = 1;
+        this.maxLives = this.lives;
     }
 }
 
@@ -103,9 +145,9 @@ class Wave{
         this.game = game;
         this.width = this.game.cols * this.game.sizeEnemy;
         this.height = this.game.rows * this.game.sizeEnemy;
-        this.x = 0;
+        this.x = this.game.width * 0.5 - this.width * 0.5;
         this.y = -this.height;
-        this.speedX = 3;
+        this.speedX = Math.random() < 0.5 ? -3 : 3;
         this.speedY = 0;
         this.enemies = [];
         this.create();
@@ -133,7 +175,7 @@ class Wave{
             for(let x = 0; x < this.game.cols; x++){
                 let enemyx = x * this.game.sizeEnemy;
                 let enemyy = y * this.game.sizeEnemy;
-                this.enemies.push(new Enemy(this.game, enemyx, enemyy));
+                this.enemies.push(new RedBomber(this.game, enemyx, enemyy));
             }
         }
     }
@@ -150,23 +192,27 @@ class Game{
         this.projectilePoolNo = 10;
         this.createProjectiles();
         //console.log(this.projectilePool);
-        this.cols = 6;
-        this.rows = 3;
-        this.sizeEnemy = 40;
+        this.cols = 3;
+        this.rows = 2;
+        this.sizeEnemy = 50;
         this.waves = [];
         this.waves.push(new Wave(this));
         this.score = 0;
         this.gameover = false;
         this.waveCount = 1;
+        this.fired = false;
 
         window.addEventListener('keydown', e => {
             if(this.keys.indexOf(e.key) === -1) this.keys.push(e.key);
             //console.log(this.keys);
-            if(e.key === '1'){
-                this.player.shoot();
+            if(e.key === '1' && !this.fired) this.player.shoot();
+            this.fired = true;
+            if(e.key === 'r' && this.gameover){
+                this.restartGame();
             }
         });
         window.addEventListener('keyup', e => {
+            this.fired = false;
             const index = this.keys.indexOf(e.key);
             if(index > -1){
                 this.keys.splice(index, 1);
@@ -189,6 +235,7 @@ class Game{
                 this.newWave();
                 this.waveCount++;
                 wave.nextWavetrigger = true;
+                this.player.lives++;
             }
         })
     }
@@ -212,10 +259,16 @@ class Game{
         context.save();
         context.fillText('Score: ' + this.score, 20, 40);
         context.fillText('Wave: ' + this.waveCount, 20, 70);
+        context.fillText('❤️ ', 10, 105);
+        for(let i = 0; i < this.player.lives; i++){
+            context.fillRect(55 + 10 * i, 85, 10, 10);
+        }
         if(this.gameover){
             context.textAlign = 'center';
             context.font = '100px Consolas';
             context.fillText("GAME OVER!", this.width * 0.5, this.height * 0.5);
+            context.font = '20px Consolas';
+            context.fillText("Press R to restart", this.width * 0.5, this.height * 0.5 + 25);
         }
         context.restore();
     }
@@ -226,6 +279,17 @@ class Game{
             this.rows++;
         }
         this.waves.push(new Wave(this));
+    }
+    restartGame(){
+        this.player.restart();
+        this.cols = 3;
+        this.rows = 2;
+        this.sizeEnemy = 40;
+        this.waves = [];
+        this.waves.push(new Wave(this));
+        this.score = 0;
+        this.gameover = false;
+        this.waveCount = 1;
     }
 }
 // -----------------------------------------------------------------------------
@@ -242,7 +306,10 @@ window.addEventListener('load', function(){
     
     const game = new Game(canvas);
     
-    function animate(){
+    let lastTime = 0;
+    function animate(timeStamp){
+        const deltaTime = timeStamp - lastTime;
+        lastTime = timeStamp;
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         game.render(ctx);
         requestAnimationFrame(animate);
