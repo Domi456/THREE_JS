@@ -1,16 +1,25 @@
 class Player{
     constructor(game){
         this.game = game;
-        this.width = 100;
-        this.height = 100;
+        this.width = 60;
+        this.height = 60;
         this.x = this.game.width * 0.5 - this.width * 0.5;
         this.y = this.game.height - this.height;
         this.speed = 5;
         this.lives = 3;
+        this.image = document.getElementById('player');
+        this.jets_img = document.getElementById('player_jet');
+        this.jets_destroyed = document.getElementById('player_destroyed');
+        this.frameX = 0;
     }
 
     draw(context){
-        context.fillRect(this.x, this.y, this.width, this.height);
+        //context.fillRect(this.x, this.y, this.width, this.height);
+        context.drawImage(this.image, this.x, this.y, this.width, this.height);
+        context.drawImage(this.jets_img, this.x, this.y, this.width, this.height);
+        if(this.game.gameover){
+            context.drawImage(this.jets_destroyed, this.x, this.y, this.width, this.height);
+        }
     }
     update(){
         if(this.game.keys.indexOf('ArrowLeft') > -1){
@@ -42,16 +51,21 @@ class Player{
 
 class Projectile{
     constructor(){
-        this.width = 10;
+        this.width = 7;
         this.height = 20;
         this.x = 0;
         this.y = 0;
         this.speed = 25;
         this.free = true;
+        this.img = document.getElementById('bullet');
     }
     draw(context){
         if(!this.free){
-            context.fillRect(this.x, this.y, this.width, this.height);
+            //context.save();
+            //context.fillStyle = 'orange';
+            //context.fillRect(this.x, this.y, this.width, this.height);
+            context.drawImage(this.img, this.x, this.y, this.width, this.height);
+            //context.restore();
         }
     }
     update(){
@@ -91,14 +105,14 @@ class Enemy{
         this.x = x + this.positionX;
         this.y = y + this.positionY;
         this.game.projectilePool.forEach(proj => {
-            if(!proj.free && this.game.isCollide(this, proj)){
+            if(!proj.free && this.game.isCollide(this, proj) && this.lives > 0){
                 //this.toDelete = true;
                 this.hit(1);
                 proj.reset();
             }
         });
         if(this.lives < 1){
-            this.frameX++;
+            if(this.game.spriteUpdate) this.frameX++;
             if(this.frameX > this.maxFrame){
                 this.toDelete = true;
                 if(!this.game.gameover){
@@ -121,10 +135,21 @@ class Enemy{
         if(this.y + this.height > this.game.height){
             this.game.gameover = true;
             this.toDelete = true;
+            //this.restart();
         }
     }
     hit(damage){
         this.lives -= damage;
+    }
+    restart(){
+        this.game = game;
+        this.width = this.game.sizeEnemy;
+        this.height = this.game.sizeEnemy;
+        this.x = 0;
+        this.y = 0;
+        this.positionX = positionX;
+        this.positionY = positionY;
+        this.toDelete = false;
     }
 }
 
@@ -132,11 +157,53 @@ class RedBomber extends Enemy{
     constructor(game, positionX, positionY){
         super(game, positionX, positionY);
         this.image = document.getElementById('redbomber');
-        this.frameX = 0;
-        this.frameY = Math.floor(Math.random() * 2);
+        this.frameX = 0;    // kép sora
+        this.frameY = 0;    // kép oszlopa
         this.maxFrame = 10;
         this.lives = 1;
         this.maxLives = this.lives;
+    }
+}
+
+class RedScout extends Enemy{
+    constructor(game, positionX, positionY){
+        super(game, positionX, positionY);
+        this.image = document.getElementById('redscout');
+        this.frameX = 0;    // kép sora
+        this.frameY = 0;    // kép oszlopa
+        this.maxFrame = 10;
+        this.lives = 1;
+        this.maxLives = this.lives;
+    }
+}
+
+class RedTorpedo extends Enemy{
+    constructor(game, positionX, positionY){
+        super(game, positionX, positionY);
+        this.image = document.getElementById('redtorpedo');
+        this.frameX = 0;    // kép sora
+        this.frameY = 0;    // kép oszlopa
+        this.maxFrame = 10;
+        this.lives = 1;
+        this.maxLives = this.lives;
+    }
+}
+
+class GreenBoss extends Enemy{
+    constructor(game, positionX, positionY){
+        super(game, positionX, positionY);
+        this.image = document.getElementById('greenboss');
+        this.frameX = 0;    // kép sora
+        this.frameY = 0;    // kép oszlopa
+        this.maxFrame = 13;
+        this.lives = 6;
+        this.maxLives = this.lives;
+        super.width = this.game.sizeEnemy + 50;
+        super.height = this.game.sizeEnemy + 50;
+    }
+    hit(damage){
+        this.lives -= damage;
+        this.frameX = this.maxLives - this.lives;
     }
 }
 
@@ -151,6 +218,7 @@ class Wave{
         this.speedY = 0;
         this.enemies = [];
         this.create();
+        //this.big_time();
     }
     render(context){
         if(this.y < 0){
@@ -175,7 +243,22 @@ class Wave{
             for(let x = 0; x < this.game.cols; x++){
                 let enemyx = x * this.game.sizeEnemy;
                 let enemyy = y * this.game.sizeEnemy;
-                this.enemies.push(new RedBomber(this.game, enemyx, enemyy));
+                if(Math.random() < 0.3){
+                    this.enemies.push(new RedBomber(this.game, enemyx, enemyy));
+                }else if(Math.random() < 0.6){
+                    this.enemies.push(new RedScout(this.game, enemyx, enemyy));
+                }else{
+                    this.enemies.push(new RedTorpedo(this.game, enemyx, enemyy));
+                }
+            }
+        }
+    }
+    big_time(){
+        for(let y = 0; y < this.game.rows; y++){
+            for(let x = 0; x < this.game.cols; x++){
+                let enemyx = x * this.game.sizeEnemy;
+                let enemyy = y * this.game.sizeEnemy;
+                this.enemies.push(new GreenBoss(this.game, enemyx, enemyy));
             }
         }
     }
@@ -192,15 +275,21 @@ class Game{
         this.projectilePoolNo = 10;
         this.createProjectiles();
         //console.log(this.projectilePool);
+
         this.cols = 3;
         this.rows = 2;
-        this.sizeEnemy = 50;
+        this.sizeEnemy = 60;
         this.waves = [];
         this.waves.push(new Wave(this));
+
         this.score = 0;
         this.gameover = false;
         this.waveCount = 1;
         this.fired = false;
+
+        this.spriteUpdate = false;
+        this.spritTimer = 0;
+        this.spriteInterval = 90;
 
         window.addEventListener('keydown', e => {
             if(this.keys.indexOf(e.key) === -1) this.keys.push(e.key);
@@ -208,7 +297,7 @@ class Game{
             if(e.key === '1' && !this.fired) this.player.shoot();
             this.fired = true;
             if(e.key === 'r' && this.gameover){
-                this.restartGame();
+                location.reload();
             }
         });
         window.addEventListener('keyup', e => {
@@ -221,7 +310,16 @@ class Game{
         });
     }
 
-    render(context){
+    render(context, deltaTime){
+        // sprite timing
+        if(this.spritTimer > this.spriteInterval){
+            this.spriteUpdate = true;
+            this.spritTimer = 0;
+        }else{
+            this.spriteUpdate = false;
+            this.spritTimer += deltaTime;
+        }
+
         this.drawStatus(context);
         this.player.draw(context);
         this.player.update();
@@ -311,8 +409,8 @@ window.addEventListener('load', function(){
         const deltaTime = timeStamp - lastTime;
         lastTime = timeStamp;
         ctx.clearRect(0, 0, canvas.width, canvas.height);
-        game.render(ctx);
+        game.render(ctx, deltaTime);
         requestAnimationFrame(animate);
     }
-    animate();
+    animate(0);
 });
