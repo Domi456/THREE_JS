@@ -1,5 +1,6 @@
 import { Canvas, useFrame } from "@react-three/fiber";
 import React, { useRef } from "react";
+import { useMediaQuery } from "react-responsive";
 
 const SpinningObj = () => {
     const boxRef = useRef();
@@ -20,6 +21,13 @@ const SpinningObj = () => {
 
 const Footer = () => {
 
+    const isMobile = useMediaQuery({ query: `(max-width: 760px)` });
+    const handleClick = (e) => {
+        if (isMobile) {
+            e.preventDefault();
+        }
+    };
+
     return(
         <section className="sm:px-10 px-5 pt-7 pb-3 border-t border-black-300 flex justify-between items-center flex-wrap gap-5">
             <div className="flex gap-3">
@@ -31,13 +39,13 @@ const Footer = () => {
                 </div>
             </div>
             <div className="flex-gap-3">
-                <div className="w-20 h-20 rounded-full flex justify-center items-center bg-black-300 border border-black-200">
+                <a href="/hiddenGame/index.html" className={`lg:block ${isMobile ? 'pointer-events-none opacity-50 cursor-default' : 'cursor-default'}`} onClick={handleClick}><div className="w-20 h-20 rounded-full flex justify-center items-center bg-black-300 border border-black-200">
                     <Canvas>
                         <ambientLight intensity={2}/>
                         <directionalLight position={[10,10,5]}/>
                         <SpinningObj/>
                     </Canvas>
-                </div>
+                </div></a>
             </div>
             <p className="text-white">©2025 | Domi456</p>
         </section>

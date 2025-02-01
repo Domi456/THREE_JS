@@ -1,0 +1,23 @@
+#canvas1 {
+    border: 5px solid black;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    translate: -50% -50%;
+    background-image: url('/assets/bg.png');
+    background-size: cover;
+    background-repeat: no-repeat;
+    width: 35rem;
+    height: 50rem;
+}
+
+.three {
+    width: 100%; /* w-20 -> 20 * 4px = 80px */
+    height: 100%; /* h-20 -> 20 * 4px = 80px */
+    border-radius: 50%; /* rounded-full */
+    display: flex;
+    justify-content: center; /* justify-center */
+    align-items: center; /* items-center */
+    background-color: #D3D3D3; /* bg-black-300 -> világosabb szürke */
+    border: 1px solid #E5E7EB; /* border border-black-200 -> világosabb szürke */
+}
