@@ -96,6 +96,7 @@ class Enemy{
         this.positionX = positionX;
         this.positionY = positionY;
         this.toDelete = false;
+        this.explosion = new Audio("./assets/xplosion_fx.mp3");
     }
     draw(context){
         //context.strokeRect(this.x, this.y, this.width, this.height);
@@ -113,8 +114,12 @@ class Enemy{
         });
         if(this.lives < 1){
             if(this.game.spriteUpdate) this.frameX++;
+            var sound_checkbox = document.getElementById('sound');
             if(this.frameX > this.maxFrame){
                 this.toDelete = true;
+                if(sound_checkbox.checked){
+                    this.explosion.play();
+                }
                 if(!this.game.gameover){
                     this.game.score += this.maxLives;
                 }
@@ -290,11 +295,18 @@ class Game{
         this.spriteUpdate = false;
         this.spritTimer = 0;
         this.spriteInterval = 90;
+        this.fx = new Audio("./assets/shot_fx.mp3");
 
         window.addEventListener('keydown', e => {
             if(this.keys.indexOf(e.key) === -1) this.keys.push(e.key);
+            var sound_checkbox = document.getElementById('sound');
             //console.log(this.keys);
-            if(e.key === '1' && !this.fired) this.player.shoot();
+            if(e.key === '1' && !this.fired){
+                this.player.shoot();
+                if(sound_checkbox.checked){
+                    this.fx.play();
+                }
+            }
             this.fired = true;
             if(e.key === 'r' && this.gameover){
                 location.reload();
