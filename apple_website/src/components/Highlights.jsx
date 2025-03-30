@@ -20,7 +20,7 @@ const Highlights = () => {
     }, [])
 
     return(
-        <section id="highlight" className="w-screen overflow-hidden h-full sm:py-32 py-20 sm:px-10 px-5 bg-zinc-700">
+        <section id="highlight" className="w-screen overflow-hidden h-full sm:py-32 py-20 sm:px-10 px-5 bg-gray-950">
             <div className="screen-max-width">
                 <div className="mb-12 w-full md:flex items-end justify-between">
                     <h1 id="title" className="text-gray lg:text-6xl md:text-5xl text-3xl lg:mb-0 mb-5 font-medium opacity-0 translate-y-20">
