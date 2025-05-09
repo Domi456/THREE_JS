@@ -20,7 +20,7 @@ const About = () => {
             <div className="grid xl:grid-cols-3 xl:grid-rows-6 md:grid-cols-2 grid-rows-1 gap-5 h-full">
                 <div className="col-span-1 xl:row-span-3">
                     <div className="w-full h-full border border-black-300 bg-black-200 rounded-lg sm:p-7 p-4 flex flex-col gap-5">
-                        <img src="/assets/grid1.png" alt="grid-1" className="w-full sm:h-[276px] h-fit object-contain"/>
+                        <img src="/assets/huggingface.png" alt="grid-1" className="w-56 sm:h-[276px] h-fit self-center object-contain"/>
                         <div>
                             <p className="text-xl font-semibold mb-2 text-white font-generalsans">Hi, I'm Domi</p>
                             <p className="text-[#afb0b6] text-base font-generalsans">Student with 2 years of experience in the world of IT</p>
@@ -30,10 +30,17 @@ const About = () => {
                 </div>
                 <div className="col-span-1 xl:row-span-3">
                     <div className="w-full h-full border border-black-300 bg-black-200 rounded-lg sm:p-7 p-4 flex flex-col gap-5">
-                        <img src="/assets/grid2.png" alt="grid-2" className="w-full sm:h-[276px] h-fit object-contain"/>
+                        <div className="grid grid-cols-3 gap-2">
+                            <img src="/assets/csharp.png" alt="grid-2" className="w-full h-auto object-contain bounce-image"/>
+                            <img src="/assets/python.png" alt="grid-2" className="w-full h-auto object-contain bounce-image"/>
+                            <img src="/assets/js.png" alt="grid-2" className="w-full h-auto object-contain bounce-image"/>
+                            <img src="/assets/ollama.png" alt="grid-2" className="w-full h-auto object-contain rounded-2xl bounce-image"/>
+                            <img src="/assets/django.png" alt="grid-2" className="w-full h-auto object-contain bounce-image"/>
+                            <img src="/assets/react.png" alt="grid-2" className="w-full h-auto object-contain bounce-image"/>
+                        </div>
                         <div>
                             <p className="text-xl font-semibold mb-2 text-white font-generalsans">Tech Stack</p>
-                            <p className="text-[#afb0b6] text-base font-generalsans">I have experience in C#, Python, Java and fullstack web development</p>
+                            <p className="text-[#afb0b6] text-base font-generalsans">I have experience in C#, Python, and web development. I'm fond of AI and machine learning too 🤖</p>
                         </div>
                     </div>
                 </div>
