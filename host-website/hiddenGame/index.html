@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Space game</title>
+    <link rel="icon" type="image/png" href="assets/alien_icon.png"/>
+    <link rel="stylesheet" href="index.css"/>
+</head>
+<body style="background-color: #000000;">
+    <div style="display: inline-flex;">
+      <a href="/">
+        <div id="three"></div>
+      </a>
+      <h1 style="color: rgb(68, 15, 184);">space game 太空游戏</h1>
+    </div>
+    <canvas id="canvas1" style="background-image: url(/hiddenGame/assets/bg.png);"></canvas>
+    <img src="assets/Foozle_2DS0012_Void_EnemyFleet_1/Kla'ed/Destruction/PNGs/Kla'ed - Fighter - Destruction.png" id="redbomber" hidden />
+    <img src="assets/Foozle_2DS0011_Void_MainShip/Main Ship/Main Ship - Bases/PNGs/Main Ship - Base - Full health.png" id="player" hidden/>
+    <img src="assets/Foozle_2DS0011_Void_MainShip/Main Ship/Main Ship - Engines/PNGs/Main Ship - Engines - Supercharged Engine.png" id="player_jet" hidden/>
+    <img src="assets/Foozle_2DS0011_Void_MainShip/Main Ship/Main Ship - Bases/PNGs/Main Ship - Base - Very damaged.png" id="player_destroyed" hidden/>
+    <img src="assets/Foozle_2DS0012_Void_EnemyFleet_1/Kla'ed/Projectiles/PNGs/Kla'ed - Bullet.png" id="bullet" hidden/>
+    <img src="assets/Foozle_2DS0014_Void_EnemyFleet_3/Nautolan/Destruction/PNGs/Nautolan Ship - Frigate.png" id="redscout" hidden />
+    <img src="assets/Foozle_2DS0012_Void_EnemyFleet_1/Kla'ed/Destruction/PNGs/Kla'ed - Torpedo Ship - Destruction.png" id="redtorpedo" hidden />
+    <img src="assets/Foozle_2DS0014_Void_EnemyFleet_3/Nautolan/Destruction/PNGs/Nautolan Ship - Dreadnought.png" id="greenboss" hidden />
+    <p style="color: rgb(68, 15, 184);">use arrows to move</p>
+    <p style="color: rgb(68, 15, 184);">press key '1' to shoot</p>
+    <input type="checkbox" id="sound" name="sound"></input>
+    <label for="sound" style="color: rgb(68, 15, 184);">enable audio</label>
+</body>
+<script type="importmap">
+    {
+      "imports": {
+        "three": "https://cdn.jsdelivr.net/npm/three@0.167.1/build/three.module.js",
+        "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.167.1/examples/jsm/"
+      }
+    }
+</script>
+<script src="script.js"></script>
+<script type="module" src="threee.js"></script>
+</html>
